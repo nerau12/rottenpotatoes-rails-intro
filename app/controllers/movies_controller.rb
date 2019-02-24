@@ -12,8 +12,16 @@ helper_method :hilite
   end
 
   def index
-    @movies = Movie.all
-    @movies = Movie.order(params[:sort])
+    @all_ratings = ['G','PG','PG-13','R']
+   
+    if !params[:ratings].nil?
+        ratings = params[:ratings].keys
+        @movies = Movie.where(rating: ratings).order(params[:sort])
+        
+    else
+        @movies = Movie.all.order(params[:sort])
+    
+    end
     
   end
 
@@ -47,9 +55,9 @@ helper_method :hilite
   
   def hilite(column)
     if (params[:sort].to_s == column)
-        return 'hilite'
+        'hilite'
     else
-        return nil
+        nil
     end
   end
 
