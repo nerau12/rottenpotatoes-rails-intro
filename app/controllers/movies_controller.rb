@@ -1,5 +1,4 @@
 class MoviesController < ApplicationController
-helper_method :hilite
 
   def movie_params
     params.require(:movie).permit(:title, :rating, :description, :release_date)
@@ -12,17 +11,7 @@ helper_method :hilite
   end
 
   def index
-    @all_ratings = ['G','PG','PG-13','R']
-   
-    if !params[:ratings].nil?
-        ratings = params[:ratings].keys
-        @movies = Movie.where(rating: ratings).order(params[:sort])
-        
-    else
-        @movies = Movie.all.order(params[:sort])
-    
-    end
-    
+    @movies = Movie.all
   end
 
   def new
@@ -52,14 +41,5 @@ helper_method :hilite
     flash[:notice] = "Movie '#{@movie.title}' deleted."
     redirect_to movies_path
   end
-  
-  def hilite(column)
-    if (params[:sort].to_s == column)
-        'hilite'
-    else
-        nil
-    end
-  end
-
 
 end
